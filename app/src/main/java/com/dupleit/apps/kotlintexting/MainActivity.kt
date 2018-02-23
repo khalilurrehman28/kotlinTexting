@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ctx = this
         getDataServer()
+
        // userText.getSettings().setJavaScriptEnabled(true)
        // userText.addJavascriptInterface(WebAppInterface(), "js")
        /* userText.setOnLongClickListener(View.OnLongClickListener {
@@ -114,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                 val WordtoSpan = SpannableString(userText.text)
                 WordtoSpan.setSpan(ForegroundColorSpan(Color.RED), min, max, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 userText.setText(WordtoSpan)
+                scrollView.smoothScrollTo(0,userText.getSelectionStart())
                 // Finish and close the ActionMode
                 Log.d("usersText",""+selectedText)
                 //mode.finish()

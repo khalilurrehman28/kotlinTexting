@@ -7,13 +7,14 @@
     tools:context="com.dupleit.apps.kotlintexting.MainActivity">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!--<org.sufficientlysecure.htmltextview.HtmlTextView-->
         <TextView
             android:id="@+id/userText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="7dp"
             android:textColor="#000"
             android:textIsSelectable="true"
