@@ -1,30 +1,35 @@
 package com.dupleit.apps.kotlintexting
 
 import android.content.Context
-import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.ActionMode
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
+import com.dupleit.apps.kotlintexting.Interface.MyTagHandler
 import com.dupleit.apps.kotlintexting.Interface.WebAppInterface
 import com.dupleit.apps.kotlintexting.Models.ServerData
 import com.dupleit.demo.kotlintest.Network.ApiClient
 import com.dupleit.demo.kotlintest.Network.ApiService
 import kotlinx.android.synthetic.main.activity_main.*
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import io.square1.richtextlib.v2.RichTextV2
-import io.square1.richtextlib.v2.content.RichTextDocumentElement
+import android.R.attr.mode
+import android.graphics.Color
+import android.text.Selection.getSelectionEnd
+import android.text.Selection.getSelectionStart
+import android.text.Spannable
+import android.text.style.ForegroundColorSpan
+import android.text.SpannableString
+
+
 
 
 
 class MainActivity : AppCompatActivity() {
-    var element: RichTextDocumentElement? = null
     lateinit var ctx:Context
     private var mActionMode: ActionMode? = null
 
@@ -33,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ctx = this
         getDataServer()
-        userText.getSettings().setJavaScriptEnabled(true)
-        userText.addJavascriptInterface(WebAppInterface(), "js")
+       // userText.getSettings().setJavaScriptEnabled(true)
+       // userText.addJavascriptInterface(WebAppInterface(), "js")
        /* userText.setOnLongClickListener(View.OnLongClickListener {
             userText.loadUrl("javascript:WebAppInterface.callback(window.getSelection().toString())")
             false
@@ -50,13 +55,16 @@ class MainActivity : AppCompatActivity() {
                     for (item in response.body()!!.data!!) {
                         // body of loop
                         //element = RichTextV2.textFromHtml(ctx, item.text)
-                        userText.loadData(item.text, "text/html", "UTF-8")
+                        //userText.loadData(item.text, "text/html", "UTF-8")
                         //userText.loadUrl("javascript:WebAppInterface.callback(window.getSelection().toString())")
                         /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             //userText. = Html.fromHtml(item.text,Html.FROM_HTML_MODE_COMPACT)
                         }else{
                             //userText.text = Html.fromHtml(item.text)
                         }*/
+                        userText.text = Html.fromHtml(item.text, null, MyTagHandler())
+                        //userText.setHtml(item.text!!,  HtmlHttpImageGetter(userText))
+                        // userText.se
                     }
                 }
             }
@@ -91,7 +99,24 @@ class MainActivity : AppCompatActivity() {
     fun onContextualMenuItemClicked(item: MenuItem) {
         when (item.itemId) {
             R.id.example_item_1 -> {
-                userText.loadUrl("javascript:WebAppInterface.callback(window.getSelection().toString())")
+               // userText.loadUrl("javascript:WebAppInterface.callback(window.getSelection().toString())")
+                var min = 0
+                var max = userText.text.length
+                if (userText.isFocused()) {
+                    val selStart = userText.getSelectionStart()
+                    val selEnd = userText.getSelectionEnd()
+
+                    min = Math.max(0, Math.min(selStart, selEnd))
+                    max = Math.max(0, Math.max(selStart, selEnd))
+                }
+                // Perform your definition lookup with the selected text
+                val selectedText = userText.text.subSequence(min, max)
+                val WordtoSpan = SpannableString(userText.text)
+                WordtoSpan.setSpan(ForegroundColorSpan(Color.RED), min, max, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                userText.setText(WordtoSpan)
+                // Finish and close the ActionMode
+                Log.d("usersText",""+selectedText)
+                //mode.finish()
             }
             R.id.example_item_2 -> {
             }

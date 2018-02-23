@@ -7,7 +7,7 @@
         android:id="@+id/example_item_1"
         android:icon="@mipmap/ic_launcher"
         android:onClick="onContextualMenuItemClicked"
-        android:title="action 1"
+        android:title="Highlight"
         app:showAsAction="always">
     </item>
 
