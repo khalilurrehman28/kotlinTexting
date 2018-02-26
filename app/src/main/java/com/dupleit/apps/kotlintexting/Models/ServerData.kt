@@ -2,8 +2,10 @@ package com.dupleit.apps.kotlintexting.Models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmList
+import io.realm.RealmObject
 
-class ServerData {
+open class ServerData :RealmObject{
 
     @SerializedName("status")
     @Expose
@@ -13,7 +15,7 @@ class ServerData {
     var code: String? = null
     @SerializedName("data")
     @Expose
-    var data: List<Datum>? = null
+    var data: RealmList<Datum>? = null
 
     /**
      * No args constructor for use in serialization
@@ -27,7 +29,7 @@ class ServerData {
      * @param data
      * @param code
      */
-    constructor(status: Boolean?, code: String, data: List<Datum>) : super() {
+    constructor(status: Boolean?, code: String, data: RealmList<Datum>) : super() {
         this.status = status
         this.code = code
         this.data = data

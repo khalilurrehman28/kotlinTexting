@@ -8,37 +8,39 @@ import android.util.Log
 import android.view.ActionMode
 import android.view.MenuItem
 import com.dupleit.apps.kotlintexting.Interface.MyTagHandler
-import com.dupleit.apps.kotlintexting.Interface.WebAppInterface
 import com.dupleit.apps.kotlintexting.Models.ServerData
 import com.dupleit.demo.kotlintest.Network.ApiClient
 import com.dupleit.demo.kotlintest.Network.ApiService
 import kotlinx.android.synthetic.main.activity_main.*
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.R.attr.mode
 import android.graphics.Color
-import android.text.Selection.getSelectionEnd
-import android.text.Selection.getSelectionStart
+import android.os.Build
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.SpannableString
-
-
-
+import com.dupleit.apps.kotlintexting.Models.Datum
+import io.realm.Realm
+import io.realm.kotlin.where
+import kotlin.properties.Delegates
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var ctx:Context
     private var mActionMode: ActionMode? = null
+    private var realm: Realm by Delegates.notNull()
+    //lateinit var userServe: ArrayList<ServerData>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ctx = this
         getDataServer()
-
+        realm = Realm.getDefaultInstance()
+        val results = realm.where<Datum>().findAll()
+        Log.d("Realm data",""+results)
        // userText.getSettings().setJavaScriptEnabled(true)
        // userText.addJavascriptInterface(WebAppInterface(), "js")
        /* userText.setOnLongClickListener(View.OnLongClickListener {
@@ -54,18 +56,11 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ServerData>, response: Response<ServerData>) {
                 if (response.isSuccessful){
                     for (item in response.body()!!.data!!) {
-                        // body of loop
-                        //element = RichTextV2.textFromHtml(ctx, item.text)
-                        //userText.loadData(item.text, "text/html", "UTF-8")
-                        //userText.loadUrl("javascript:WebAppInterface.callback(window.getSelection().toString())")
-                        /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            //userText. = Html.fromHtml(item.text,Html.FROM_HTML_MODE_COMPACT)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            userText.text = Html.fromHtml(item.text,Html.FROM_HTML_MODE_COMPACT,null,MyTagHandler())
                         }else{
-                            //userText.text = Html.fromHtml(item.text)
-                        }*/
-                        userText.text = Html.fromHtml(item.text, null, MyTagHandler())
-                        //userText.setHtml(item.text!!,  HtmlHttpImageGetter(userText))
-                        // userText.se
+                            userText.text = Html.fromHtml(item.text, null, MyTagHandler())
+                        }
                     }
                 }
             }
