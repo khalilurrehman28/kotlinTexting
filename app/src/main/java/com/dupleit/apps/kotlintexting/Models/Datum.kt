@@ -1,11 +1,14 @@
 package com.dupleit.apps.kotlintexting.Models
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class Datum : RealmObject{
+open class Datum : RealmObject() {
 
     @PrimaryKey
     @SerializedName("id")
@@ -24,24 +27,6 @@ open class Datum : RealmObject{
     @Expose
     var text: String? = null
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    constructor() {}
-
-    /**
-     *
-     * @param id
-     * @param text
-     * @param _class
-     * @param name
-     */
-    constructor(id: String?, name: String?, _class: String?, text: String?) : super() {
-        this.id = id
-        this.name = name
-        this.class_ = _class
-        this.text = text
-    }
+   // var editedText:Spanned? = null
 
 }
