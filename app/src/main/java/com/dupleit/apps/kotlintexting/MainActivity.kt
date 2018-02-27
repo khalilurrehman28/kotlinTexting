@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.text.Spannable
@@ -189,9 +190,18 @@ class MainActivity : AppCompatActivity() {
                 WordtoSpan.setSpan(ForegroundColorSpan(Color.RED), min, max, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 userText.text = WordtoSpan
 
-                scrollView.smoothScrollTo(userText.selectionStart,0)
-                // Finish and close the ActionMode
+                //scrollView.smoothScrollTo(0,min)
+                 // Finish and close the ActionMode
                 Log.d("usersText",""+selectedText)
+
+                val handler = Handler()
+                handler.postDelayed(Runnable {
+                    scrollView.post(Runnable {
+                        scrollView.scrollTo(0, min) // these are your x and y coordinates
+                    })
+                }, 700)
+
+
 
                 var key: Int
                 try {
